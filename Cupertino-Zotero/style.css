@@ -1,0 +1,803 @@
+/* ============================================================
+   Cupertino for Zotero · v1.7.0
+   macOS 原生风格主题（Zotero 7–9）· 红色主题版
+
+   v1.7.0 变更
+   · 条目列表展开附件：子行级联入场动画（淡入 + 上滑，
+     每行延迟 40ms，bootstrap.js 配合注入动画类）
+   · twisty 箭头旋转过渡增强（125ms → 200ms 苹果曲线）
+   · 尊重系统"减弱动态效果"设置（prefers-reduced-motion）
+
+   v1.6.x 变更
+   · 集合树图标 → 红色竖线（隐藏原彩色图标，3px 圆角红条）
+   · 详情面板折叠区/文库和分类图标统一灰色
+   · 所有实底红改浅红底（浅色 11% / 深色 26%），统一规范
+   · 删除全部灰色分割线；滑出式自动隐藏保留 10px 感应条
+   ============================================================ */
+
+/* ---------- Cupertino 设计令牌 ---------- */
+
+:root {
+	--cupertino-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+		"Segoe UI Variable Text", "Segoe UI Variable Display", "Segoe UI",
+		"PingFang SC", "Microsoft YaHei UI", system-ui, sans-serif;
+	--cupertino-radius-s: 6px;
+	--cupertino-radius-m: 8px;
+	--cupertino-radius-l: 10px;
+	--cupertino-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+	--cupertino-ease-out: cubic-bezier(0.2, 0.9, 0.3, 1);
+
+	/* 全局消线：所有 panedivider / tab 底线变透明 */
+	--tab-border: 0 solid transparent !important;
+	--color-panedivider: transparent !important;
+}
+
+/* 浅色模式：macOS 浅色系统色板 · 红色主题 */
+@media (prefers-color-scheme: light) {
+	:root {
+		/* 主题强调色 → macOS 系统红 */
+		--accent-red: #ff3b30 !important;
+		--accent-blue: #ff3b30 !important;
+		--accent-blue10: rgba(255, 59, 48, 0.1) !important;
+		--accent-blue30: rgba(255, 59, 48, 0.3) !important;
+		--accent-blue50: rgba(255, 59, 48, 0.5) !important;
+		--accent-azure: #ff6b61 !important;
+		--accent-green: #34c759 !important;
+		--accent-orange: #ff9500 !important;
+		--accent-yellow: #ffcc00 !important;
+		--accent-gold: #ffb340 !important;
+		--accent-teal: #64d2ff !important;
+		--accent-highlight: rgba(255, 234, 0, 0.45) !important;
+
+		/* 选中态（菜单高亮/焦点） */
+		--color-accent: #ff3b30 !important;
+		--color-accent-text: #ffffff !important;
+
+		/* macOS 界面色板：窗口底灰、卡片白 */
+		--color-toolbar: #e9e9eb !important;
+		--color-tabbar: #e9e9eb !important;
+		--color-sidepane: #f6f6f8 !important;
+		--color-background: #ffffff !important;
+		--color-button: #ffffff !important;
+		--color-control: #ffffff !important;
+		--color-menu: rgba(246, 246, 248, 0.78) !important;
+		--color-menu-opaque: #f6f6f8 !important;
+		--color-border: rgba(0, 0, 0, 0.13) !important;
+		--color-border50: rgba(0, 0, 0, 0.07) !important;
+		--color-stripe: rgba(0, 0, 0, 0.028) !important;
+		--color-stripe-on-background: #fafafc !important;
+		--color-scrollbar: rgba(0, 0, 0, 0.24) !important;
+		--color-scrollbar-hover: rgba(0, 0, 0, 0.44) !important;
+		--color-quinary-on-background: #f2f2f4 !important;
+		--color-quarternary-on-background: #e8e8ea !important;
+		--color-quinary-on-sidepane: #ececf0 !important;
+		--color-quarternary-on-sidepane: #e0e0e4 !important;
+
+		/* 条目列表选中行：浅红底 + 深红字 */
+		--cupertino-row-selected-bg: rgba(255, 59, 48, 0.11) !important;
+		--cupertino-row-selected-text: #1d1d1f !important;
+		--cupertino-row-selected-title: #d70015 !important;
+
+		/* 标签色保留柔和色板（数据语义色，非主题色） */
+		--tag-red: rgb(254, 112, 112) !important;
+		--tag-orange: rgb(255, 159, 10) !important;
+		--tag-yellow: rgb(255, 212, 0) !important;
+		--tag-green: rgb(74, 213, 95) !important;
+		--tag-teal: rgb(100, 210, 255) !important;
+		--tag-blue: rgb(106, 173, 250) !important;
+		--tag-indigo: rgb(94, 92, 230) !important;
+		--tag-purple: rgb(191, 90, 242) !important;
+		--tag-magenta: rgb(255, 55, 95) !important;
+		--tag-plum: rgb(181, 106, 165) !important;
+		--tag-gray: rgb(152, 152, 157) !important;
+		--tag-red-opaque: rgb(254, 112, 112) !important;
+		--tag-orange-opaque: rgb(255, 159, 10) !important;
+		--tag-yellow-opaque: rgb(255, 212, 0) !important;
+		--tag-green-opaque: rgb(74, 213, 95) !important;
+		--tag-teal-opaque: rgb(100, 210, 255) !important;
+		--tag-blue-opaque: rgb(106, 173, 250) !important;
+		--tag-indigo-opaque: rgb(94, 92, 230) !important;
+		--tag-purple-opaque: rgb(191, 90, 242) !important;
+		--tag-magenta-opaque: rgb(255, 55, 95) !important;
+		--tag-plum-opaque: rgb(181, 106, 165) !important;
+		--tag-gray-opaque: rgb(152, 152, 157) !important;
+
+		--cupertino-shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+		--cupertino-shadow-card: 0 1px 5px rgba(0, 0, 0, 0.07) !important;
+	}
+}
+
+/* 深色模式：macOS 深色系统色板 · 红色主题 */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--accent-red: #ff453a !important;
+		--accent-blue: #ff453a !important;
+		--accent-blue10: rgba(255, 69, 58, 0.16) !important;
+		--accent-blue30: rgba(255, 69, 58, 0.32) !important;
+		--accent-blue50: rgba(255, 69, 58, 0.5) !important;
+		--accent-azure: rgba(255, 138, 128, 0.92) !important;
+		--accent-green: #30d158 !important;
+		--accent-orange: #ff9f0a !important;
+		--accent-yellow: #ffd60a !important;
+		--accent-gold: #ffbf1f !important;
+		--accent-teal: #64d2ff !important;
+		--accent-highlight: rgba(255, 212, 0, 0.3) !important;
+
+		--color-accent: #ff453a !important;
+		--color-accent-text: #ffffff !important;
+
+		--color-toolbar: #1d1d20 !important;
+		--color-tabbar: #1d1d20 !important;
+		--color-sidepane: #26262a !important;
+		--color-background: #2a2a2e !important;
+		--color-button: #3a3a3e !important;
+		--color-control: #c7c7cc !important;
+		--color-menu: rgba(44, 44, 48, 0.72) !important;
+		--color-menu-opaque: #2c2c30 !important;
+		--color-border: rgba(255, 255, 255, 0.14) !important;
+		--color-border50: rgba(255, 255, 255, 0.08) !important;
+		--color-stripe: rgba(255, 255, 255, 0.035) !important;
+		--color-stripe-on-background: #2d2d31 !important;
+		--color-scrollbar: rgba(255, 255, 255, 0.24) !important;
+		--color-scrollbar-hover: rgba(255, 255, 255, 0.44) !important;
+		--color-quinary-on-background: #313135 !important;
+		--color-quarternary-on-background: #38383c !important;
+		--color-quinary-on-sidepane: #2e2e32 !important;
+		--color-quarternary-on-sidepane: #36363a !important;
+
+		/* 深色模式选中行：半透明红底 + 浅红强调 */
+		--cupertino-row-selected-bg: rgba(255, 69, 58, 0.26) !important;
+		--cupertino-row-selected-text: #f2f2f4 !important;
+		--cupertino-row-selected-title: #ff8a80 !important;
+
+		--tag-red: rgba(254, 112, 112, 0.9) !important;
+		--tag-orange: rgba(255, 159, 10, 0.9) !important;
+		--tag-yellow: rgba(255, 212, 0, 0.85) !important;
+		--tag-green: rgba(74, 213, 95, 0.9) !important;
+		--tag-teal: rgba(100, 210, 255, 0.9) !important;
+		--tag-blue: rgba(106, 173, 250, 0.9) !important;
+		--tag-indigo: rgba(94, 92, 230, 0.9) !important;
+		--tag-purple: rgba(191, 90, 242, 0.9) !important;
+		--tag-magenta: rgba(255, 55, 95, 0.9) !important;
+		--tag-plum: rgba(181, 106, 165, 0.9) !important;
+		--tag-gray: rgba(152, 152, 157, 0.9) !important;
+		--tag-red-opaque: rgb(254, 112, 112) !important;
+		--tag-orange-opaque: rgb(255, 159, 10) !important;
+		--tag-yellow-opaque: rgb(255, 212, 0) !important;
+		--tag-green-opaque: rgb(74, 213, 95) !important;
+		--tag-teal-opaque: rgb(100, 210, 255) !important;
+		--tag-blue-opaque: rgb(106, 173, 250) !important;
+		--tag-indigo-opaque: rgb(94, 92, 230) !important;
+		--tag-purple-opaque: rgb(191, 90, 242) !important;
+		--tag-magenta-opaque: rgb(255, 55, 95) !important;
+		--tag-plum-opaque: rgb(181, 106, 165) !important;
+		--tag-gray-opaque: rgb(152, 152, 157) !important;
+
+		--cupertino-shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+		--cupertino-shadow-card: 0 1px 5px rgba(0, 0, 0, 0.32) !important;
+	}
+}
+
+/* ---------- 全局字体：SF Pro 观感 ---------- */
+
+#main-window,
+window,
+dialog,
+wizard,
+panel,
+tooltip,
+menupopup {
+	font-family: var(--cupertino-font) !important;
+}
+
+/* ---------- 窗口统一底色 ---------- */
+
+#main-window,
+#zotero-pane {
+	background: var(--color-toolbar) !important;
+}
+
+.zotero-toolbar {
+	background: transparent !important;
+	border-bottom: none !important;
+}
+
+/* 标签栏融入窗口底色，无底线 */
+#tab-bar-container,
+#zotero-title-bar,
+#titlebar {
+	background: transparent !important;
+	border-bottom: none !important;
+}
+
+#tab-bar-container::before,
+#tab-bar-container::after,
+.tab-bar-inner-container,
+.tab-bar-inner-container .tab {
+	border-bottom: none !important;
+}
+
+/* ---------- 三栏面板：圆角卡片（无描边，仅柔和投影） ---------- */
+
+#zotero-collections-pane {
+	background: var(--color-sidepane) !important;
+	border-radius: var(--cupertino-radius-l) !important;
+	margin: 6px 0 6px 8px !important;
+	box-shadow: var(--cupertino-shadow-card) !important;
+	overflow: hidden !important;
+	border: none !important;
+}
+
+#zotero-items-pane-container {
+	background: var(--color-background) !important;
+	border-radius: var(--cupertino-radius-l) !important;
+	margin: 6px 0 !important;
+	box-shadow: var(--cupertino-shadow-card) !important;
+	overflow: hidden !important;
+	border: none !important;
+}
+
+#zotero-item-pane,
+#zotero-context-pane:not(.stacked) {
+	background: var(--color-background) !important;
+	border-radius: var(--cupertino-radius-l) !important;
+	margin: 6px 8px 6px 0 !important;
+	box-shadow: var(--cupertino-shadow-card) !important;
+	overflow: hidden !important;
+	border: none !important;
+}
+
+#zotero-toolbar-collection-tree,
+#zotero-toolbar-item-tree {
+	background: transparent !important;
+	border: none !important;
+}
+
+/* 分离条视觉隐藏（拖拽保留） */
+#zotero-collections-splitter,
+#zotero-items-splitter,
+#zotero-context-splitter,
+#zotero-tags-splitter {
+	background: transparent !important;
+	border: none !important;
+}
+
+/* ============================================================
+   滑出式自动隐藏 · 边缘感应条模式（v1.5.0）
+   收起 = 保留 10px 透明感应条（贴近面板边缘触发）；
+   展开 = 完整显示（200ms 滑出 / 280ms 收起）。
+   保底：focus-within（键盘/搜索聚焦）、has([open])（下拉）
+   ============================================================ */
+
+/* —— 1. 顶部菜单文字：Z 图标右侧窄热区 —— */
+
+#menubar-items {
+	max-width: 14px !important;
+	min-width: 14px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	overflow: hidden !important;
+	opacity: 0;
+	transition: max-width 280ms var(--cupertino-ease), opacity 200ms ease !important;
+}
+
+#menubar-items:hover,
+#toolbar-menubar:hover #menubar-items,
+#menubar-items:focus-within,
+#menubar-items:has(menu[open]) {
+	max-width: 420px !important;
+	padding: 0 4px !important;
+	opacity: 1;
+	transition: max-width 200ms var(--cupertino-ease-out), opacity 140ms ease !important;
+}
+
+/* —— 2. 标签栏右侧按钮（标签菜单/同步）：右上角窄热区 —— */
+
+#zotero-tabs-toolbar {
+	max-width: 14px !important;
+	min-width: 14px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	overflow: hidden !important;
+	opacity: 0;
+	transition: max-width 280ms var(--cupertino-ease), opacity 200ms ease !important;
+}
+
+#zotero-tabs-toolbar:hover,
+#zotero-tabs-toolbar:focus-within,
+#zotero-tabs-toolbar:has([open]),
+#zotero-tabs-toolbar:has(.syncing) {
+	max-width: 200px !important;
+	padding: 0 4px !important;
+	opacity: 1;
+	transition: max-width 200ms var(--cupertino-ease-out), opacity 140ms ease !important;
+}
+
+/* —— 3. 集合栏工具栏：面板顶部 10px 感应条 —— */
+
+#zotero-toolbar-collection-tree {
+	max-height: 10px !important;
+	min-height: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	overflow: hidden !important;
+	opacity: 0;
+	transition: max-height 280ms var(--cupertino-ease), opacity 200ms ease !important;
+}
+
+#zotero-toolbar-collection-tree:hover,
+#zotero-toolbar-collection-tree:focus-within,
+#zotero-toolbar-collection-tree:has([open]),
+#zotero-toolbar-collection-tree:has(#zotero-collections-search:not(.hidden)) {
+	max-height: 56px !important;
+	padding: 4px 6px !important;
+	opacity: 1;
+	transition: max-height 200ms var(--cupertino-ease-out), opacity 140ms ease !important;
+}
+
+/* —— 4. 主工具栏（新建/魔棒/搜索）：面板顶部 10px 感应条 —— */
+
+#zotero-toolbar-item-tree {
+	max-height: 10px !important;
+	min-height: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	overflow: hidden !important;
+	opacity: 0;
+	transition: max-height 280ms var(--cupertino-ease), opacity 200ms ease !important;
+}
+
+#zotero-toolbar-item-tree:hover,
+#zotero-toolbar-item-tree:focus-within,
+#zotero-toolbar-item-tree:has([open]) {
+	max-height: 56px !important;
+	padding: 4px 6px !important;
+	opacity: 1;
+	transition: max-height 200ms var(--cupertino-ease-out), opacity 140ms ease !important;
+}
+
+/* —— 5. 详情面板图标列：面板左缘 10px 感应条 —— */
+
+item-pane-sidenav {
+	max-width: 10px !important;
+	min-width: 10px !important;
+	width: 10px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	border-inline-start: none !important;
+	overflow: hidden !important;
+	opacity: 0;
+	transition: max-width 280ms var(--cupertino-ease), opacity 200ms ease !important;
+}
+
+item-pane-sidenav:hover,
+item-pane-sidenav:focus-within {
+	max-width: 44px !important;
+	width: auto !important;
+	padding: 6px 4px 0 !important;
+	opacity: 1;
+	transition: max-width 200ms var(--cupertino-ease-out), opacity 140ms ease !important;
+}
+
+/* —— 6. 标签选择器按钮组：右侧窄热区 —— */
+
+.tag-selector-actions {
+	max-width: 12px !important;
+	min-width: 12px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	overflow: hidden !important;
+	opacity: 0;
+	transition: max-width 280ms var(--cupertino-ease), opacity 200ms ease !important;
+}
+
+.tag-selector-actions:hover,
+.tag-selector-actions:focus-visible,
+.tag-selector-actions[selected] {
+	max-width: 120px !important;
+	opacity: 1;
+	transition: max-width 200ms var(--cupertino-ease-out), opacity 140ms ease !important;
+}
+
+/* ============================================================
+   图标处理（v1.6.0）
+   · 集合树：隐藏彩色图标，改 3px 红色竖线（twisty 箭头
+     是独立元素不受影响，展开折叠正常）
+   · 详情面板折叠区 + sidenav：多色内嵌 SVG，fill 覆盖无效，
+     用 filter: grayscale 统一灰色
+   ============================================================ */
+
+/* 集合树行图标 → 红色竖线
+   图标元素本身就是 span.icon-css.cell-icon，SVG 通过元素
+   自身 background 绘制（无子元素），必须 background:none 抹除 */
+#zotero-collections-tree .cell.primary .cell-icon:not(.twisty) {
+	background: none !important;
+	-moz-context-properties: none !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	min-width: 16px !important;
+}
+
+#zotero-collections-tree .cell.primary .cell-icon:not(.twisty)::after {
+	content: "" !important;
+	display: block !important;
+	width: 3px !important;
+	height: 13px !important;
+	border-radius: 1.5px !important;
+	background: rgba(255, 59, 48, 0.4) !important;
+	transition: background-color 130ms var(--cupertino-ease) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+	#zotero-collections-tree .cell.primary .cell-icon:not(.twisty)::after {
+		background: rgba(255, 69, 58, 0.5) !important;
+	}
+}
+
+/* 悬浮行：竖线加深 */
+#zotero-collections-tree .row:hover:not(.selected) .cell.primary .cell-icon:not(.twisty)::after {
+	background: rgba(255, 59, 48, 0.65) !important;
+}
+
+/* 选中行：竖线全红 */
+#zotero-collections-tree .row.selected .cell.primary .cell-icon:not(.twisty)::after {
+	background: var(--accent-red) !important;
+}
+
+/* 详情面板「文库和分类」树：彩色集合图标统一灰色 */
+libraries-collections-box .cell-icon,
+libraries-collections-box .icon-css,
+libraries-collections-box .cell-image {
+	filter: grayscale(100%) !important;
+}
+
+/* 详情面板折叠区标题图标：统一灰色 */
+collapsible-section > .head .title-box {
+	filter: grayscale(100%) !important;
+}
+
+/* sidenav 图标列（多色图标全灰） */
+item-pane-sidenav {
+	--material-sidepane: transparent;
+}
+
+item-pane-sidenav svg,
+item-pane-sidenav .icon-css,
+item-pane-sidenav .btn {
+	filter: grayscale(100%) !important;
+}
+
+/* ============================================================
+   条目列表选中行：浅红底 + 红字（v1.5.0 减淡）
+   ============================================================ */
+
+.virtualized-table .row.selected,
+#zotero-items-tree .drag-image-container .row.selected {
+	background-color: var(--cupertino-row-selected-bg) !important;
+	color: var(--cupertino-row-selected-text) !important;
+}
+
+/* 选中行标题列红色强调 */
+.virtualized-table .row.selected .cell.primary {
+	color: var(--cupertino-row-selected-title) !important;
+}
+
+/* 集合树选中行：浅红底红字（11%/26% 统一规范） */
+#zotero-collections-tree .row.selected {
+	background-color: var(--cupertino-row-selected-bg) !important;
+	color: var(--cupertino-row-selected-title) !important;
+}
+
+#zotero-collections-tree .row.selected .cell.primary {
+	color: var(--cupertino-row-selected-title) !important;
+}
+
+/* ============================================================
+   全局消线（v1.5.0）
+   ============================================================ */
+
+/* 列表表头：无线 */
+.virtualized-table-header,
+.virtualized-table-header .cell {
+	background: transparent !important;
+	border: none !important;
+	border-bottom: none !important;
+	box-shadow: none !important;
+}
+
+/* sidenav：左边线 + 分隔横线全删 */
+item-pane-sidenav,
+item-pane-sidenav.stacked {
+	border-inline-start: none !important;
+	border-top: none !important;
+}
+
+item-pane-sidenav .divider {
+	display: none !important;
+}
+
+/* 标签选择器头部顶线删除 */
+.tag-selector-filter-container {
+	border-top: none !important;
+}
+
+/* 面板内残余分隔线兜底 */
+#zotero-collections-pane,
+#zotero-items-pane-container,
+#zotero-item-pane,
+#zotero-context-pane {
+	border: none !important;
+}
+
+/* ---------- 工具栏按钮：macOS 三态动效 ---------- */
+
+toolbarbutton {
+	border-radius: var(--cupertino-radius-s) !important;
+	transition: background-color 130ms var(--cupertino-ease),
+		color 130ms var(--cupertino-ease) !important;
+}
+
+toolbarbutton:hover {
+	background-color: var(--fill-quarternary) !important;
+}
+
+toolbarbutton:hover:active,
+toolbarbutton[open="true"] {
+	background-color: var(--fill-tertiary) !important;
+}
+
+.zotero-tb-button > .toolbarbutton-icon {
+	transition: opacity 100ms var(--cupertino-ease) !important;
+}
+
+.zotero-tb-button:hover:active > .toolbarbutton-icon {
+	opacity: 0.65 !important;
+}
+
+toolbarbutton[disabled="true"] {
+	background-color: transparent !important;
+}
+
+/* sidenav 图标按钮悬浮 */
+item-pane-sidenav .btn {
+	border-radius: var(--cupertino-radius-s) !important;
+	transition: background-color 120ms var(--cupertino-ease) !important;
+}
+
+item-pane-sidenav .btn:hover {
+	background-color: var(--fill-quarternary) !important;
+}
+
+/* ---------- 列表行 ---------- */
+
+.virtualized-table .row:hover:not(.selected) {
+	background-color: var(--fill-quarternary) !important;
+}
+
+#zotero-collections-tree .row {
+	border-radius: var(--cupertino-radius-s) !important;
+	transition: background-color 120ms var(--cupertino-ease) !important;
+}
+
+#zotero-collections-tree .row:hover:not(.selected) {
+	background-color: var(--fill-quarternary) !important;
+}
+
+.virtualized-table .row.selected.first-selected,
+#zotero-items-tree .drag-image-container .row.selected.first-selected {
+	border-top-left-radius: var(--cupertino-radius-s) !important;
+	border-top-right-radius: var(--cupertino-radius-s) !important;
+}
+
+.virtualized-table .row.selected.last-selected,
+#zotero-items-tree .drag-image-container .row.selected.last-selected {
+	border-bottom-left-radius: var(--cupertino-radius-s) !important;
+	border-bottom-right-radius: var(--cupertino-radius-s) !important;
+}
+
+/* ---------- 标签页：Safari 风格 ---------- */
+
+#tab-bar-container .tab {
+	border-radius: 7px !important;
+	transition: background-color 150ms var(--cupertino-ease),
+		box-shadow 150ms var(--cupertino-ease) !important;
+}
+
+#tab-bar-container .tab:hover:not(.selected) {
+	background-color: var(--fill-quinary) !important;
+}
+
+#tab-bar-container .tab.selected {
+	background-color: var(--color-background) !important;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+	#tab-bar-container .tab.selected {
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+	}
+}
+
+/* ---------- 搜索框：聚焦红色光环 ---------- */
+
+search-textbox,
+quick-search-textbox {
+	border-radius: 7px !important;
+	background: var(--fill-quinary) !important;
+	border: none !important;
+	box-shadow: inset 0 0 0 0.5px var(--color-border50) !important;
+	transition: background-color 150ms var(--cupertino-ease),
+		box-shadow 150ms var(--cupertino-ease) !important;
+}
+
+search-textbox:focus,
+search-textbox[focused="true"],
+quick-search-textbox:focus,
+quick-search-textbox[focused="true"] {
+	background: var(--color-background) !important;
+	box-shadow: 0 0 0 3px var(--accent-blue30),
+		inset 0 0 0 0.5px var(--accent-blue50) !important;
+}
+
+search-textbox::placeholder,
+quick-search-textbox::placeholder {
+	color: var(--fill-tertiary) !important;
+}
+
+/* ---------- 菜单：毛玻璃圆角 + 红色高亮 ---------- */
+
+menupopup {
+	background: var(--color-menu) !important;
+	border-radius: var(--cupertino-radius-m) !important;
+	border: 0.5px solid var(--color-border50) !important;
+	box-shadow: var(--cupertino-shadow-menu) !important;
+	backdrop-filter: blur(24px) saturate(1.6) !important;
+	padding: 4px !important;
+}
+
+menupopup menu,
+menupopup menuitem {
+	border-radius: 5px !important;
+	transition: background-color 100ms var(--cupertino-ease) !important;
+}
+
+menupopup menuitem:hover,
+menupopup menu:hover {
+	background-color: var(--color-accent) !important;
+	color: var(--color-accent-text) !important;
+}
+
+menupopup menuseparator {
+	border-color: var(--color-border50) !important;
+}
+
+/* ---------- 滚动条 ---------- */
+
+scrollbar {
+	appearance: none !important;
+	background-color: transparent !important;
+}
+
+scrollbar[orient="vertical"] {
+	width: 11px !important;
+}
+
+scrollbar[orient="horizontal"] {
+	height: 11px !important;
+}
+
+scrollbar thumb {
+	appearance: none !important;
+	background-color: var(--color-scrollbar) !important;
+	border-radius: 6px !important;
+	border: 3px solid transparent !important;
+	background-clip: padding-box !important;
+	transition: background-color 150ms var(--cupertino-ease) !important;
+}
+
+scrollbar thumb:hover {
+	background-color: var(--color-scrollbar-hover) !important;
+}
+
+scrollbar slider {
+	background-color: transparent !important;
+}
+
+scrollbar scrollbarbutton {
+	display: none !important;
+}
+
+/* ---------- 通用控件 ---------- */
+
+button,
+toolbarbutton,
+menulist,
+input,
+textarea,
+select {
+	border-radius: var(--cupertino-radius-s) !important;
+}
+
+button {
+	transition: background-color 130ms var(--cupertino-ease),
+		box-shadow 130ms var(--cupertino-ease) !important;
+}
+
+button:hover:not([disabled="true"]) {
+	box-shadow: inset 0 0 0 0.5px var(--color-border50) !important;
+}
+
+/* 详情面板折叠区标题 */
+collapsible-section > .head {
+	border-radius: var(--cupertino-radius-s) !important;
+	transition: background-color 120ms var(--cupertino-ease) !important;
+}
+
+collapsible-section > .head:hover {
+	background-color: var(--fill-quinary) !important;
+}
+
+/* ============================================================
+   条目列表展开/收起动画（v1.7.3）
+   展开时子行从上方滑入淡入并按序级联（每行 +65ms，上限 520ms）；
+   下方平移行按 FLIP 偏移量滑动（展开下滑入、收起上滑入），
+   时长与级联尾部对齐避免"下方先到位"的割裂感。
+   动画类由 bootstrap.js 在 twisty mouseup 快照 + 行级
+   aria-level 比对后注入；行本身为 top 绝对定位
+   （windowed-list），transform 动画安全。
+   ============================================================ */
+
+@keyframes cupertino-row-in {
+	from {
+		opacity: 0;
+		transform: translateY(-13px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes cupertino-row-shift {
+	from {
+		transform: translateY(var(--cupertino-row-shift, 0px));
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+#zotero-items-tree .row.cupertino-row-in {
+	animation: cupertino-row-in 380ms var(--cupertino-ease-out) both;
+	animation-delay: var(--cupertino-row-delay, 0ms);
+}
+
+#zotero-items-tree .row.cupertino-row-shift {
+	animation: cupertino-row-shift 520ms var(--cupertino-ease-out) both;
+}
+
+/* twisty 箭头旋转：官方 125ms ease 增强为苹果曲线 */
+#zotero-items-tree .twisty,
+#zotero-collections-tree .twisty {
+	transition: transform 200ms var(--cupertino-ease-out) !important;
+}
+
+/* 系统"减弱动态效果"时关闭条目动画 */
+@media (prefers-reduced-motion: reduce) {
+	#zotero-items-tree .row.cupertino-row-in,
+	#zotero-items-tree .row.cupertino-row-shift {
+		animation: none !important;
+	}
+
+	#zotero-items-tree .twisty,
+	#zotero-collections-tree .twisty {
+		transition: none !important;
+	}
+}

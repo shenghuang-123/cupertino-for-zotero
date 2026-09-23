@@ -1,0 +1,17 @@
+# 打包产物（由 pack.ps1 生成，不入库）
+*.xpi
+
+# 演示素材
+*.mp4
+
+# 第三方参考源码 / 上游主题原始文件（仅本地设计参考，不入库）
+_analysis/
+Cupertino/
+
+# 系统与编辑器
+Thumbs.db
+.DS_Store
+desktop.ini
+*.tmp
+.vscode/
+.idea/
