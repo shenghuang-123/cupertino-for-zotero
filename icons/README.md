@@ -13,6 +13,7 @@ Cupertino for Zotero 的图标概念：**把 Zotero 的 Z 做成一颗 macOS 应
 | `cupertino-icon-v1.svg` | 备选方案（圆头笔画）矢量主稿 |
 | `cupertino-icon-1024/512/192/96/48.png` | 采用方案的透明底位图导出 |
 | `icon-compare.png` | 两方案在浅色底与深色底下的对比图 |
+| `cupertino-og.svg` `cupertino-og.png` | GitHub 仓库 Social preview 配图（1280×640） |
 | `_sheet.html` | 对比图排版源文件 |
 | `_master-v1.png` | 备选方案的 1024 渲染，供 `_sheet.html` 使用 |
 | `_resize.ps1` | 由 `cupertino-icon-1024.png` 批量导出各尺寸 |
@@ -38,3 +39,9 @@ cp cupertino-icon-96.png ../Cupertino-Zotero/icons/icon-96.png
 ```
 
 Edge 截图写完文件后不会自动退出，放后台跑即可。
+
+## 在 GitHub 上的呈现
+
+- README 顶部已内嵌 `cupertino-icon-96.png`
+- Social preview：仓库 Settings → General → Social preview → Edit，上传 `cupertino-og.png`（要求 ≥640×320，1280×640 最佳）
+- 当前 GitHub 设置页已无 "Repository avatar" 上传项，个人仓库的列表/头像位固定跟随账号头像，无法单独设置
