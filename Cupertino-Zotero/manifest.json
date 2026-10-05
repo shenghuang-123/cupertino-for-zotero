@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Cupertino for Zotero",
-	"version": "1.7.3",
+	"version": "1.7.4",
 	"description": "macOS 原生风格主题：SF Pro 字体观感、系统级配色、圆角卡片面板、毛玻璃菜单、细滚动条。设计语言移植自 Obsidian Cupertino 主题。",
 	"author": "Cupertino for Zotero",
 	"applications": {

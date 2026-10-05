@@ -1,6 +1,11 @@
 /* ============================================================
-   Cupertino for Zotero · v1.7.0
+   Cupertino for Zotero · v1.7.4
    macOS 原生风格主题（Zotero 7–9）· 红色主题版
+
+   v1.7.4 变更
+   · 左栏（集合树 + 标签选择器）底色与顶栏统一
+     （--color-sidepane → --color-toolbar，深浅色模式同步）
+   · 移除集合面板卡片投影：底色统一后投影会留下矩形灰晕
 
    v1.7.0 变更
    · 条目列表展开附件：子行级联入场动画（淡入 + 上滑，
@@ -220,10 +225,9 @@ menupopup {
 /* ---------- 三栏面板：圆角卡片（无描边，仅柔和投影） ---------- */
 
 #zotero-collections-pane {
-	background: var(--color-sidepane) !important;
+	background: var(--color-toolbar) !important;
 	border-radius: var(--cupertino-radius-l) !important;
 	margin: 6px 0 6px 8px !important;
-	box-shadow: var(--cupertino-shadow-card) !important;
 	overflow: hidden !important;
 	border: none !important;
 }
