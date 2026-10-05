@@ -2,7 +2,7 @@
 
 # Cupertino for Zotero
 
-把 macOS 的原生观感搬进 Zotero：SF Pro 字体观感、系统级配色、圆角卡片面板、毛玻璃菜单、细滚动条，外加条目展开时的级联入场动画。设计语言移植自 Obsidian 的 [Cupertino](https://github.com/aaaaalexis/obsidian-cupertino) 主题。
+把 macOS 的原生观感搬进 Zotero：SF Pro 字体观感、系统级配色、圆角卡片面板、细滚动条，外加条目展开时的级联入场动画。设计语言移植自 Obsidian 的 [Cupertino](https://github.com/aaaaalexis/obsidian-cupertino) 主题。
 
 - 当前版本：**v1.7.5**
 - 支持 Zotero **7.0 – 10.x**
