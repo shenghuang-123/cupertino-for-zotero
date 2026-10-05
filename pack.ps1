@@ -6,8 +6,8 @@ $src = Join-Path $root "Cupertino-Zotero"
 $xpi = Join-Path $root "cupertino-theme@zotero.local.xpi"
 if (Test-Path $xpi) { Remove-Item $xpi -Force }
 $zip = [System.IO.Compression.ZipFile]::Open($xpi, [System.IO.Compression.ZipArchiveMode]::Create)
-foreach ($f in @('manifest.json','bootstrap.js','style.css')) {
-	[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path $src $f), $f, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
+foreach ($f in @('manifest.json','bootstrap.js','style.css','icons/icon-48.png','icons/icon-96.png')) {
+	[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path $src $f.Replace('/', [IO.Path]::DirectorySeparatorChar)), $f, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
 }
 $zip.Dispose()
 Write-Host ("Done: " + $xpi + " (" + (Get-Item $xpi).Length + " bytes)")

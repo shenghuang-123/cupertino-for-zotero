@@ -1,8 +1,10 @@
+<img src="icons/cupertino-icon-96.png" alt="Cupertino for Zotero 图标" width="72" align="left">
+
 # Cupertino for Zotero
 
 把 macOS 的原生观感搬进 Zotero：SF Pro 字体观感、系统级配色、圆角卡片面板、毛玻璃菜单、细滚动条，外加条目展开时的级联入场动画。设计语言移植自 Obsidian 的 [Cupertino](https://github.com/aaaaalexis/obsidian-cupertino) 主题。
 
-- 当前版本：**v1.7.3**
+- 当前版本：**v1.7.5**
 - 支持 Zotero **7.0 – 10.x**
 - 纯样式插件：不改动 Zotero 数据，不做网络请求，卸载即完全还原
 
@@ -33,7 +35,7 @@
 
 ## 从源码打包
 
-源码在 `Cupertino-Zotero/`，共三个文件：`manifest.json`、`bootstrap.js`、`style.css`。
+源码在 `Cupertino-Zotero/`：`manifest.json`、`bootstrap.js`、`style.css`，以及 `icons/` 下的插件图标。
 
 Windows 下右键 `pack.ps1` → **使用 PowerShell 运行**，会在项目根目录生成 `cupertino-theme@zotero.local.xpi`。
 
@@ -43,15 +45,17 @@ Windows 下右键 `pack.ps1` → **使用 PowerShell 运行**，会在项目根�
 Set-ExecutionPolicy -Scope Process Bypass
 ```
 
-也可以手动压缩：把 `Cupertino-Zotero/` 里的三个文件**直接放在 zip 根目录**（不要多套一层文件夹），改扩展名为 `.xpi` 即可。
+也可以手动压缩：把 `Cupertino-Zotero/` 里的三个文件和 `icons/` 文件夹**直接放在 zip 根目录**（不要多套一层文件夹，`icons/` 保留这层子目录），改扩展名为 `.xpi` 即可。
 
 ## 目录结构
 
 ```
 Cupertino-Zotero/
-  manifest.json    插件清单（id / 版本 / 兼容范围）
+  manifest.json    插件清单（id / 版本 / 兼容范围 / icons）
   bootstrap.js     生命周期与条目动画逻辑
   style.css        Cupertino 设计令牌与全部样式规则
+  icons/           插件图标（48 / 96 PNG，供 Zotero 插件管理器显示）
+icons/             图标设计稿：SVG 主稿、各尺寸导出、方案对比图
 pack.ps1           打包脚本
 ```
 

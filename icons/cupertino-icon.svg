@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Cupertino for Zotero">
+	<defs>
+		<linearGradient id="red" x1="512" y1="112" x2="512" y2="912" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#FF4B3C" />
+			<stop offset="0.55" stop-color="#FF382E" />
+			<stop offset="1" stop-color="#DD261E" />
+		</linearGradient>
+		<linearGradient id="sheen" x1="512" y1="112" x2="512" y2="470" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#FFFFFF" stop-opacity="0.14" />
+			<stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+		</linearGradient>
+		<filter id="lift" x="-10%" y="-10%" width="120%" height="126%" color-interpolation-filters="sRGB">
+			<feDropShadow dx="0" dy="14" stdDeviation="20" flood-color="#5C0A06" flood-opacity="0.30" />
+		</filter>
+	</defs>
+
+	<g filter="url(#lift)">
+		<rect x="100" y="100" width="824" height="824" rx="182" fill="url(#red)" />
+	</g>
+	<rect x="100" y="100" width="824" height="824" rx="182" fill="url(#sheen)" />
+	<rect x="105" y="105" width="814" height="814" rx="177" fill="none" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2.5" />
+
+	<path d="M352 336 H672 L352 688 H672" fill="none" stroke="#FFFFFF" stroke-width="78" stroke-linecap="butt" stroke-linejoin="miter" />
+</svg>
