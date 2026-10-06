@@ -1,6 +1,10 @@
 /* ============================================================
-   Cupertino for Zotero · v1.7.5
+   Cupertino for Zotero · v1.7.6
    macOS 原生风格主题（Zotero 7–9）· 红色主题版
+
+   v1.7.6 变更
+   · 右栏（条目详情面板）底色与顶栏统一：面板内 sidepane
+     材质随 --color-toolbar，卡片投影移除（与 v1.7.4 左栏同款处理）
 
    v1.7.5 变更
    · 新增插件图标（红底圆角方块 + 白色几何 Z），manifest 注册 icons 字段
@@ -246,10 +250,10 @@ menupopup {
 
 #zotero-item-pane,
 #zotero-context-pane:not(.stacked) {
-	background: var(--color-background) !important;
+	--material-sidepane: var(--color-toolbar);
+	background: var(--color-toolbar) !important;
 	border-radius: var(--cupertino-radius-l) !important;
 	margin: 6px 8px 6px 0 !important;
-	box-shadow: var(--cupertino-shadow-card) !important;
 	overflow: hidden !important;
 	border: none !important;
 }

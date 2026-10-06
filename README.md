@@ -4,9 +4,15 @@
 
 把 macOS 的原生观感搬进 Zotero：SF Pro 字体观感、系统级配色、圆角卡片面板、细滚动条，外加条目展开时的级联入场动画。设计语言移植自 Obsidian 的 [Cupertino](https://github.com/aaaaalexis/obsidian-cupertino) 主题。
 
-- 当前版本：**v1.7.5**
+- 当前版本：**v1.7.6**
 - 支持 Zotero **7.0 – 10.x**
 - 纯样式插件：不改动 Zotero 数据，不做网络请求，卸载即完全还原
+
+## 外观参考
+
+![Cupertino for Zotero 浅色模式参考图](docs/preview-light.png)
+
+浅色模式参考图（v1.7.6）：左右两栏底色与顶栏统一为窗口灰，中栏保留白色内容卡片。图中条目信息已脱敏，以占位符号代替。
 
 ## 特性
 
