@@ -10,7 +10,7 @@
 
 ## 外观参考
 
-[Cupertino for Zotero 浅色模式参考图](docs/preview-light.png)
+![Cupertino for Zotero 浅色模式参考图](docs/preview-light.png)
 
 浅色模式参考图（v1.7.6）：左右两栏底色与顶栏统一为窗口灰，中栏保留白色内容卡片。图中条目信息已脱敏，以占位符号代替。
 
